@@ -5,6 +5,7 @@ import pickle
 from sklearn.neighbors import KDTree
 import numpy as np
 from typing import List,Union
+import codecs
 
 
 def get_embedding(str_dataset:str,embedding_size:int=100,overwrite=False):
@@ -23,7 +24,7 @@ def get_embedding(str_dataset:str,embedding_size:int=100,overwrite=False):
             file_not_found = True
 
     if file_not_found or overwrite:
-        with  open("embeddings_data/"+str_dataset,"r") as f_e:
+        with codecs.open("embeddings_data/"+str_dataset, encoding='utf-8') as f_e:
             try:
                 for i,line in enumerate(f_e):
                     arr_line = line.strip().split()
