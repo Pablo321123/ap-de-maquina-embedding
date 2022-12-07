@@ -21,10 +21,9 @@ class TestEmbeddings(unittest.TestCase):
                                   "am":np.array([1,1,2], dtype=np.float16),
                                   }
                                   #python program to check if a directory exists
-        path = "assignment_cache"
-        isExist = os.path.exists(path)
-        if not isExist:
-            os.makedirs(path)
+        kdtree_test_folder = "assignment_cache"
+        if not os.path.exists(kdtree_test_folder):
+            os.makedirs(kdtree_test_folder)
         self.analogy = Analogy(self.dict_embeddings, "kdtree.teste", overwrite_kdtree=True)
 
     def test_get_embeddings(self):
