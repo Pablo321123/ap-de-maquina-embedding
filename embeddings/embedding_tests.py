@@ -1,4 +1,5 @@
 import unittest
+import os
 from embeddings.utils import *
 
 class TestEmbeddings(unittest.TestCase):
@@ -19,6 +20,10 @@ class TestEmbeddings(unittest.TestCase):
                                   "pascoa":np.array([1,2,1], dtype=np.float16),
                                   "am":np.array([1,1,2], dtype=np.float16),
                                   }
+                                  #python program to check if a directory exists
+        kdtree_test_folder = "assignment_cache"
+        if not os.path.exists(kdtree_test_folder):
+            os.makedirs(kdtree_test_folder)
         self.analogy = Analogy(self.dict_embeddings, "kdtree.teste", overwrite_kdtree=True)
 
     def test_get_embeddings(self):
