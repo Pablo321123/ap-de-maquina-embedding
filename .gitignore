@@ -4,3 +4,8 @@ embeddings.txt
 *.npz
 *.idx
 .ipynb_checkpoints
+embeddings_data
+glove.en.100.txt
+glove.pt.100.txt
+glove.en.100.txt.p
+glove.pt.100.txt.p
