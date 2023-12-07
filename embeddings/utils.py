@@ -53,7 +53,7 @@ def get_embedding(str_dataset: str, embedding_size: int = 100, overwrite=False):
             pickle.dump(dict_embedding, embedding_file)
 
     print(f"Palavras ignoradas: {erro_value}")
-    
+
     return dict_embedding
 
 
@@ -114,13 +114,14 @@ class Analogy:
                 return None
 
         # obtem o embedding de cada palavra usando self.dict_embedding
-        embedding_x = None
-        embedding_x_esta_para = None
-        embedding_y = None
-        # print(f"x: {embedding_x} esta para: {embedding_x_esta_para} assim_como: {embedding_y}" )
+        embedding_x = self.dict_embedding[palavra_x]
+        embedding_x_esta_para = self.dict_embedding[esta_para]
+        embedding_y = self.dict_embedding[assim_como]
+        
+        #print(f"x: {embedding_x} esta para: {embedding_x_esta_para} assim_como: {embedding_y}" )
 
         # retorna o calculo da analogia
-        embedding_y_esta_para = None
+        embedding_y_esta_para = embedding_y - embedding_x + embedding_x_esta_para
 
         return embedding_y_esta_para
 
