@@ -117,8 +117,8 @@ class Analogy:
         embedding_x = self.dict_embedding[palavra_x]
         embedding_x_esta_para = self.dict_embedding[esta_para]
         embedding_y = self.dict_embedding[assim_como]
-        
-        #print(f"x: {embedding_x} esta para: {embedding_x_esta_para} assim_como: {embedding_y}" )
+
+        # print(f"x: {embedding_x} esta para: {embedding_x_esta_para} assim_como: {embedding_y}" )
 
         # retorna o calculo da analogia
         embedding_y_esta_para = embedding_y - embedding_x + embedding_x_esta_para
@@ -127,15 +127,20 @@ class Analogy:
 
     def analogia(self, palavra_x: str, esta_para: str, assim_como: str) -> List:
         # calcula o embeding da analogia
-        embedding = None
+        embedding = self.calcula_embedding_analogia(palavra_x, esta_para, assim_como)
 
         # caso não exista uma das palavras, é retornado uma lista vazia
         if embedding is None:
             return []
 
         # obtem as palavras mais similares
-        _, words = None
+        _, words = self.kdtree_embedding.get_most_similar_embedding(
+            embedding,
+            k_most_similar=5,
+            words_to_ignore=[palavra_x, esta_para, assim_como],
+        )
 
+        print(f"{palavra_x} {esta_para} {assim_como} {words}")
         return words
 
 
@@ -217,12 +222,17 @@ class KDTreeEmbedding:
         # a ser procurado. Caso seja a palavra, é necessario obter o embedding correspondente
         query_embedding = query
         if type(query) == str:
+            # print(query)
             if query not in self.dict_embedding:
                 return [], []
             query_embedding = self.dict_embedding[query]
 
         # obtém o embedding
-        nearest_dist, nearest_ind = None
+        # print(query_embedding)
+        nearest_dist, nearest_ind = self.kd_embedding.query(
+            [query_embedding], k_most_similar, return_distance=True
+        )
+
         return self.positions_to_word(nearest_dist[0], nearest_ind[0], words_to_ignore)
 
     def get_embeddings_by_similarity(
@@ -234,5 +244,7 @@ class KDTreeEmbedding:
                 return [], []
             embedding = self.dict_embedding[query]
 
-        nearest_ind, nearest_dist = None
+        nearest_ind, nearest_dist = self.kd_embedding.query_radius(
+            [embedding], max_distance, return_distance=True
+        )
         return self.positions_to_word(nearest_dist[0], nearest_ind[0], words_to_ignore)
